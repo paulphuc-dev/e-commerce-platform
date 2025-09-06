@@ -1,0 +1,138 @@
+syntax = "proto3";
+
+package profile;
+
+import "google/protobuf/empty.proto";
+option go_package = "accountpb";
+
+// ----------- MESSAGE DEFINITIONS ------------
+
+message Account {
+  string id = 1;
+  string username = 2;
+  string password = 3;
+  bool is_active = 4;
+  string account_id = 5;
+}
+
+message Customer {
+  string id = 1;
+  string full_name = 2;
+  int32 age = 3;
+  string phone = 4;
+  string address = 5;
+}
+
+
+// ----------- REQUEST DEFINITIONS ------------
+
+// Accounts
+message AccountRequest{
+  int32 page = 1;
+  string username = 2;
+  string role = 3;
+}
+
+message ChangePasswordRequest {
+  string id = 1;
+  string newPassword = 2;
+}
+
+message DisableAccountRequest {
+  string id = 1;
+}
+
+message AccountResponse {
+  int32 status = 1;
+  string message = 2;
+  Account account = 3;
+}
+
+message AccountPagination{
+  int32 total =1;
+  int32 page = 2;
+  int32 totalPages = 3;
+  repeated Account accounts = 4;
+}
+
+message GetAllAccountsResponse {
+  int32 status = 1;
+  string message = 2;
+  AccountPagination pagination = 3;
+}
+
+// Customers
+message CustomerRequest{
+  int32 page = 1;
+  string fullname = 2;
+  string phone = 3;
+}
+
+message GetCustomerRequest {
+  string id = 1;
+}
+
+message CreateCustomerRequest {
+  string full_name = 1;
+  int32 age = 2;
+  string phone = 3;
+  string address = 4;
+  string account_id = 5;
+}
+
+message UpdateCustomerRequest {
+  string id = 1;
+  string full_name = 2;
+  int32 age = 3;
+  string phone = 4;
+  string address = 5;
+}
+
+message CustomerResponse {
+  int32 status = 1;
+  string message = 2;
+  Customer customer = 3;
+}
+
+message CustomerPagination{
+  int32 total =1;
+  int32 page = 2;
+  int32 totalPages = 3;
+  repeated Customer customers = 4;
+}
+
+message GetAllCustomersResponse {
+  int32 status = 1;
+  string message = 2;
+  CustomerPagination pagination = 3;
+}
+
+// Login
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  int32 status = 1;
+  string message = 2;
+  string token = 3;
+}
+
+// ----------- SERVICE DEFINITIONS ------------
+
+service ProfileService {
+  // Account methods
+  rpc GetAccounts(AccountRequest) returns (GetAllAccountsResponse);
+  rpc ChangePassword(ChangePasswordRequest) returns (AccountResponse);
+  rpc DisableAccount(DisableAccountRequest) returns (AccountResponse);
+
+  // Customer methods
+  rpc GetCustomers(CustomerRequest) returns (GetAllCustomersResponse);
+  rpc GetCustomerById(GetCustomerRequest) returns (CustomerResponse);
+  rpc CreateCustomer(CreateCustomerRequest) returns (CustomerResponse);
+  rpc UpdateCustomer(UpdateCustomerRequest) returns (CustomerResponse);
+
+  // Login
+  rpc Login(LoginRequest) returns (LoginResponse);
+}

@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package product;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// ----------- MESSAGE DEFINITIONS ------------
+
+message Product {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  int32 stock = 4;
+  double price = 5;
+  bool isActive = 6;
+  string username = 7;
+  google.protobuf.Timestamp modifiedAt = 8;
+}
+
+// ----------- REQUEST / RESPONSE DEFINITIONS ------------
+
+// Product requests
+message GetProductByIdRequest {
+  string id = 1;
+}
+
+message CreateProductRequest {
+  string name = 1;
+  string description = 2;
+  int32 stock = 3;
+  double price = 4;
+  string username = 5;
+  bytes avatar = 6;      // file ảnh dạng bytes
+  string filename = 7;
+  string mimetype = 8;
+}
+
+message UpdateProductRequest {
+  string name = 1;
+  string description = 2;
+  int32 stock = 3;
+  double price = 4;
+  bool isActive = 5;
+  string avatarUrl = 6;
+  string username = 7;
+}
+
+message UpdateProductWrapperRequest {
+  string id = 1;
+  UpdateProductRequest update = 2;
+}
+
+message DeleteProductRequest {
+  string id = 1;
+}
+
+message ProductResponse {
+  int32 status = 1;
+  string message = 2;
+  Product product = 3;
+}
+
+
+message Pagination{
+  int32 total = 1;
+  int32 page = 2;
+  int32 totalPages = 3;
+  repeated Product products = 4;
+}
+
+message GetAllProductsResponse {
+  int32 status = 1;
+  string message = 2;
+  Pagination pagination = 3;
+}
+
+message GetProductsRequest {
+  int32 page = 1;        // optional
+  string id = 2;          // optional
+  string name = 3;        // optional
+}
+
+// ----------- SERVICE DEFINITIONS ------------
+
+service ProductService {
+  rpc GetProducts(GetProductsRequest) returns (GetAllProductsResponse);
+  rpc GetProductById(GetProductByIdRequest) returns (ProductResponse);
+  rpc CreateProduct(CreateProductRequest) returns (ProductResponse);
+  rpc UpdateProduct(UpdateProductWrapperRequest) returns (ProductResponse);
+  rpc DeleteProduct(DeleteProductRequest) returns (ProductResponse);
+}
