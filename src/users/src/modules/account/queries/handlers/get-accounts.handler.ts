@@ -11,7 +11,7 @@ export class GetAccountsHandler implements IQueryHandler<GetAccountsQuery> {
   constructor(private readonly productService: AccountService) {}
   async execute(query: GetAccountsQuery): Promise<AccountsResponseDto> {
     const { page, username, role } = query;
-    const pagination = await this.productService.getAccounts( page, username, role);
+    const pagination = await this.productService.getCustomers( page, username, role);
     const raw = {
       status: HttpStatus.OK,
       message: Message.GET_ALL_SUCCESSFULLY,

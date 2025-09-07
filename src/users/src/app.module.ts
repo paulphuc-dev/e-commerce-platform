@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AccountModule } from './modules/account/account.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -21,6 +19,6 @@ import { CronjobModule } from './seeds/cronjob.module';
 })
 export class AppModule {
   constructor(){
-    console.log('✅ Users Module loaded !');
+    console.log('✅ Profile Module loaded !');
   }
 }
