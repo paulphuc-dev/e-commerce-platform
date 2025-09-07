@@ -1,5 +1,12 @@
 import { Expose } from "class-transformer";
-export class SigninRes{
+import { ResponseData } from "./response-data";
+export class SigninRes{ 
     @Expose()
-    token: string;
+    status: number;
+
+    @Expose()
+    message: string;
+
+    @Expose()
+    data: ResponseData;
 }

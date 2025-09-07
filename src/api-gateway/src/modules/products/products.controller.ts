@@ -8,11 +8,16 @@ import { Controller,
   Body, 
   ParseIntPipe, 
   UseInterceptors,
-  UploadedFile 
+  UploadedFile,
+  UseGuards 
 } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductsService } from './products.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/role.guard';
+import { Roles } from '../auth/decorators/role.decorator';
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('products')
 export class ProductsController {
   constructor(
@@ -27,12 +32,13 @@ export class ProductsController {
   ) {
     return this.productsService.getProducts(page, id, name);
   }
-
+  
   @Get(':id')
   getProductById(@Param('id') id: string) {
     return this.productsService.getProductById(id);
   }
 
+  @Roles('admin')
   @UseInterceptors(FileInterceptor('avatar'))
   @Post()
   async createProduct(@Body() data: any,  @UploadedFile() file: Express.Multer.File,) {
@@ -46,11 +52,13 @@ export class ProductsController {
     return result;
   }
 
+  @Roles('admin')
   @Put(':id')
   updateProduct(@Param('id') id: string, @Body() data: any) {
     return this.productsService.updateProduct(id, data);
   }
 
+  @Roles('admin')
   @Delete(':id')
   deleteProduct(@Param('id') id: string) {
     return this.productsService.deleteProduct(id)

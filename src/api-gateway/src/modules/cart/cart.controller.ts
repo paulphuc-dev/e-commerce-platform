@@ -1,6 +1,10 @@
-import { Controller, Get, Post, Put, Delete ,Param, Query, Body } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, UseGuards } from '@nestjs/common';
+import { Roles } from '../auth/decorators/role.decorator';
 import { CartService } from './cart.service';
-
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/role.guard';
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('customer')
 @Controller('cart')
 export class CartController {
     constructor(private readonly cartService: CartService) {}

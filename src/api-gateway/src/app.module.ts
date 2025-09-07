@@ -5,9 +5,11 @@ import { PaymentsModule } from './modules/payment/payments.module';
 import { ProductsModule } from './modules/products/products.module'
 import { ProfileModule } from './modules/profile/profile.module';
 import { CartModule } from './modules/cart/cart.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { ServiceLauncherService } from './service-launcher.service';
 @Module({
   imports: [
+    AuthModule,
     OrdersModule,
     PaymentsModule,
     ProductsModule,

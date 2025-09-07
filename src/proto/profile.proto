@@ -113,10 +113,15 @@ message LoginRequest {
   string password = 2;
 }
 
+message LoginData{
+  string token = 1;
+  string username = 2;
+}
+
 message LoginResponse {
   int32 status = 1;
   string message = 2;
-  string token = 3;
+  LoginData data = 3;
 }
 
 // ----------- SERVICE DEFINITIONS ------------
